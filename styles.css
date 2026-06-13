@@ -1249,6 +1249,16 @@ body.light-mode .gallery-filter.active {
   gap: var(--space-5);
 }
 
+.testimonials-empty {
+  text-align: center;
+  padding: var(--space-16) var(--space-4);
+}
+
+.testimonials-empty-text {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+}
+
 .testimonial-card {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border-soft);
