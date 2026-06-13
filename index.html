@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Nware — Reparación profesional de computadoras, notebooks y celulares. Diagnóstico claro, presupuestos transparentes y seguimiento en tiempo real." />
+  <meta name="keywords" content="reparación de computadoras, reparación de celulares, técnico en PC, notebook, servicio técnico, Mendoza" />
+  <meta name="author" content="Nware" />
+  <meta name="theme-color" content="#000000" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Nware — Servicio Técnico Profesional" />
+  <meta property="og:description" content="Reparación de computadoras, notebooks y celulares con atención personalizada y seguimiento de reparaciones." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nware.com.ar" />
+  <meta property="og:image" content="https://nware.com.ar/og-image.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Nware — Servicio Técnico Profesional" />
+  <meta name="twitter:description" content="Reparación de computadoras, notebooks y celulares con atención personalizada." />
+
+  <title>Nware — Servicio Técnico Profesional</title>
+
+  <!-- Favicon temporal (SVG inline como data URI) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23000'/><text x='16' y='22' font-family='Inter,sans-serif' font-weight='800' font-size='18' fill='%235FE3F0' text-anchor='middle'>N</text></svg>" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dark-mode">
+
+  <!-- ============================================================
+       NAVEGACIÓN
+  ============================================================ -->
+  <header class="nav-header" id="nav-header">
+    <nav class="nav-container" aria-label="Navegación principal">
+
+      <!-- Logo -->
+      <a href="#inicio" class="nav-logo" aria-label="Nware — inicio">
+        <img src="assets/logo-fondonegro.png" alt="" class="nav-logo-img nav-logo-img--dark" aria-hidden="true" />
+        <img src="assets/logo_fondoblanco.png" alt="" class="nav-logo-img nav-logo-img--light" aria-hidden="true" />
+        <span class="nav-logo-text">Nware</span>
+      </a>
+
+      <!-- Links de navegación (desktop) -->
+      <ul class="nav-links" role="list">
+        <li><a href="#servicios" class="nav-link">Servicios</a></li>
+        <li><a href="#por-que-nware" class="nav-link">Por qué Nware</a></li>
+        <li><a href="#seguimiento" class="nav-link">Seguimiento</a></li>
+        <li><a href="#galeria" class="nav-link">Galería</a></li>
+        <li><a href="#opiniones" class="nav-link">Opiniones</a></li>
+        <li><a href="#contacto" class="nav-link">Contacto</a></li>
+      </ul>
+
+      <!-- Controles de la navbar -->
+      <div class="nav-controls">
+        <!-- Toggle de modo oscuro/claro -->
+        <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">
+          <span class="theme-icon theme-icon--sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </span>
+          <span class="theme-icon theme-icon--moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </span>
+        </button>
+
+        <!-- Botón hamburguesa (mobile) -->
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-mobile-menu">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Menú mobile -->
+    <div class="nav-mobile-menu" id="nav-mobile-menu" role="dialog" aria-label="Menú de navegación">
+      <ul class="nav-mobile-links" role="list">
+        <li><a href="#servicios" class="nav-mobile-link">Servicios</a></li>
+        <li><a href="#por-que-nware" class="nav-mobile-link">Por qué Nware</a></li>
+        <li><a href="#seguimiento" class="nav-mobile-link">Seguimiento</a></li>
+        <li><a href="#galeria" class="nav-mobile-link">Galería</a></li>
+        <li><a href="#opiniones" class="nav-mobile-link">Opiniones</a></li>
+        <li><a href="#contacto" class="nav-mobile-link">Contacto</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============================================================
+         HERO
+    ============================================================ -->
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero-content fade-in">
+
+        <!-- Logo grande en el hero -->
+        <div class="hero-logo-wrapper" aria-label="Logo Nware">
+          <img src="assets/logo-fondonegro.png" alt="" class="hero-logo-img hero-logo-img--dark" aria-hidden="true" />
+          <img src="assets/logo_fondoblanco.png" alt="" class="hero-logo-img hero-logo-img--light" aria-hidden="true" />
+        </div>
+
+        <p class="hero-subtitle">
+          Reparación de computadoras,<br />notebooks y celulares
+        </p>
+
+        <p class="hero-description">
+          Soluciones de hardware y software con atención personalizada.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#contacto" class="btn btn--primary">Solicitar reparación</a>
+          <a href="#servicios" class="btn btn--secondary">Ver servicios</a>
+        </div>
+
+        <!-- Indicadores de confianza -->
+        <div class="hero-stats" aria-label="Estadísticas de Nware">
+          <div class="hero-stat">
+            <span class="hero-stat-number">48hs</span>
+            <span class="hero-stat-label">Tiempo promedio</span>
+          </div>
+          <div class="hero-stat-divider" aria-hidden="true"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-number">100%</span>
+            <span class="hero-stat-label">Diagnóstico claro<br />y soluciones personalizadas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decoración de fondo del hero -->
+      <div class="hero-bg-decoration" aria-hidden="true">
+        <div class="hero-glow"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SERVICIOS
+    ============================================================ -->
+    <section class="section" id="servicios" aria-labelledby="servicios-title">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Lo que hacemos</span>
+          <h2 class="section-title" id="servicios-title">Servicios</h2>
+          <p class="section-subtitle">Cobertura técnica completa para tu equipo, con diagnóstico honesto y soluciones reales.</p>
+        </div>
+
+        <div class="services-grid">
+
+          <!-- Tarjeta: Reparación de PC -->
+          <article class="service-card reveal" aria-labelledby="service-pc">
+            <div class="service-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+              </svg>
+            </div>
+            <h3 class="service-card-title" id="service-pc">Reparación de PC</h3>
+            <p class="service-card-desc">Diagnóstico y reparación de computadoras de escritorio. Placas madre, fuentes, gabinetes y más.</p>
+          </article>
+
+          <!-- Tarjeta: Reparación de Notebooks -->
+          <article class="service-card reveal" aria-labelledby="service-notebook">
+            <div class="service-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7H4z"/><path d="M2 17h20v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+              </svg>
+            </div>
+            <h3 class="service-card-title" id="service-notebook">Reparación de Notebooks</h3>
+            <p class="service-card-desc">Pantallas, bisagras, teclados, baterías y problemas de plaqueta en laptops de todas las marcas.</p>
+          </article>
+
+          <!-- Tarjeta: Reparación de Celulares -->
+          <article class="service-card reveal" aria-labelledby="service-celular">
+            <div class="service-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="18" r="1"/>
+              </svg>
+            </div>
+            <h3 class="service-card-title" id="service-celular">Reparación de Celulares</h3>
+            <p class="service-card-desc">Cambio de pantalla, batería, conector de carga y reparaciones de placa en smartphones Android y iPhone.</p>
+          </article>
+
+          <!-- Tarjeta: Instalación de Software -->
+          <article class="service-card reveal" aria-labelledby="service-software">
+            <div class="service-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+            <h3 class="service-card-title" id="service-software">Instalación de Software</h3>
+            <p class="service-card-desc">Sistema operativo, drivers, programas y configuración completa del equipo lista para usar.</p>
+          </article>
+
+          <!-- Tarjeta: Eliminación de Virus -->
+          <article class="service-card reveal" aria-labelledby="service-virus">
+            <div class="service-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <h3 class="service-card-title" id="service-virus">Eliminación de Virus</h3>
+            <p class="service-card-desc">Detección y limpieza de malware, ransomware y spyware. Tu equipo seguro y protegido.</p>
+          </article>
+
+          <!-- Tarjeta: Actualización de Hardware -->
+          <article class="service-card reveal" aria-labelledby="service-upgrade">
+            <div class="service-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              </svg>
+            </div>
+            <h3 class="service-card-title" id="service-upgrade">Actualización de Hardware</h3>
+            <p class="service-card-desc">Más RAM, SSD en lugar de disco rígido, cambio de procesador. Dale nueva vida a tu equipo.</p>
+          </article>
+
+          <!-- Tarjeta: Recuperación de Datos -->
+          <article class="service-card reveal" aria-labelledby="service-datos">
+            <div class="service-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+              </svg>
+            </div>
+            <h3 class="service-card-title" id="service-datos">Recuperación de Datos</h3>
+            <p class="service-card-desc">Recuperación de archivos desde discos dañados, formateados o con sectores defectuosos.</p>
+          </article>
+
+          <!-- Tarjeta: Mantenimiento Preventivo -->
+          <article class="service-card reveal" aria-labelledby="service-mant">
+            <div class="service-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+              </svg>
+            </div>
+            <h3 class="service-card-title" id="service-mant">Mantenimiento Preventivo</h3>
+            <p class="service-card-desc">Limpieza interna, cambio de pasta térmica y revisión general para evitar fallas futuras.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         POR QUÉ NWARE
+    ============================================================ -->
+    <section class="section section--alt" id="por-que-nware" aria-labelledby="por-que-title">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Nuestra diferencia</span>
+          <h2 class="section-title" id="por-que-title">Por qué elegir Nware</h2>
+          <p class="section-subtitle">Trabajamos con honestidad desde el primer diagnóstico hasta la entrega del equipo.</p>
+        </div>
+
+        <div class="benefits-grid">
+
+          <div class="benefit-item reveal">
+            <div class="benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h3 class="benefit-title">Diagnóstico claro</h3>
+              <p class="benefit-desc">Te explicamos exactamente qué tiene tu equipo, en palabras simples y sin rodeos.</p>
+            </div>
+          </div>
+
+          <div class="benefit-item reveal">
+            <div class="benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h3 class="benefit-title">Atención personalizada</h3>
+              <p class="benefit-desc">No somos un call center. Hablás con la persona que repara tu equipo, siempre.</p>
+            </div>
+          </div>
+
+          <div class="benefit-item reveal">
+            <div class="benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h3 class="benefit-title">Seguimiento del estado</h3>
+              <p class="benefit-desc">Consultá el estado de tu reparación en cualquier momento con tu código único.</p>
+            </div>
+          </div>
+
+          <div class="benefit-item reveal">
+            <div class="benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h3 class="benefit-title">Presupuestos transparentes</h3>
+              <p class="benefit-desc">Sin cargos ocultos. El presupuesto que acordamos es el precio final.</p>
+            </div>
+          </div>
+
+          <div class="benefit-item reveal">
+            <div class="benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h3 class="benefit-title">Comunicación rápida</h3>
+              <p class="benefit-desc">Respondemos por WhatsApp e Instagram en el mismo día. Sin vueltas.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SEGUIMIENTO DE REPARACIONES
+    ============================================================ -->
+    <section class="section" id="seguimiento" aria-labelledby="seguimiento-title">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Tu reparación</span>
+          <h2 class="section-title" id="seguimiento-title">Seguimiento de reparaciones</h2>
+          <p class="section-subtitle">Ingresá tu código de reparación para ver el estado actual de tu equipo.</p>
+        </div>
+
+        <div class="tracker-wrapper reveal">
+
+          <!-- Formulario de búsqueda -->
+          <!-- TODO: Conectar al endpoint de Supabase/Firebase reemplazando la función fetchRepairStatus() en script.js -->
+          <div class="tracker-input-group">
+            <label for="repair-code" class="tracker-label">Código de reparación</label>
+            <div class="tracker-input-row">
+              <input
+                type="text"
+                id="repair-code"
+                class="tracker-input"
+                placeholder="Ej: NW-2026-001"
+                maxlength="15"
+                autocomplete="off"
+                spellcheck="false"
+                aria-describedby="repair-code-hint"
+              />
+              <button class="btn btn--primary tracker-btn" id="tracker-btn" aria-label="Consultar estado de reparación">
+                Consultar
+              </button>
+            </div>
+            <p class="tracker-hint" id="repair-code-hint">El código te fue enviado al dejar tu equipo.</p>
+          </div>
+
+          <!-- Resultado del seguimiento -->
+          <div class="tracker-result" id="tracker-result" aria-live="polite" aria-atomic="true" hidden>
+
+            <!-- Estado de carga -->
+            <div class="tracker-loading" id="tracker-loading" hidden>
+              <div class="tracker-loading-dot"></div>
+              <div class="tracker-loading-dot"></div>
+              <div class="tracker-loading-dot"></div>
+            </div>
+
+            <!-- Resultado exitoso -->
+            <div class="tracker-card" id="tracker-card" hidden>
+              <div class="tracker-card-header">
+                <div>
+                  <span class="tracker-code-label">Código</span>
+                  <span class="tracker-code-value" id="result-code"></span>
+                </div>
+                <div class="tracker-status-badge" id="result-status-badge">
+                  <span class="tracker-status-dot" id="result-status-dot" aria-hidden="true"></span>
+                  <span id="result-status-text"></span>
+                </div>
+              </div>
+
+              <div class="tracker-card-body">
+                <div class="tracker-field">
+                  <span class="tracker-field-label">Equipo</span>
+                  <span class="tracker-field-value" id="result-device"></span>
+                </div>
+                <div class="tracker-field">
+                  <span class="tracker-field-label">Fecha de ingreso</span>
+                  <span class="tracker-field-value" id="result-date"></span>
+                </div>
+                <div class="tracker-field">
+                  <span class="tracker-field-label">Técnico</span>
+                  <span class="tracker-field-value" id="result-tech"></span>
+                </div>
+              </div>
+
+              <!-- Observación técnica (estilo terminal) -->
+              <div class="tracker-observation">
+                <span class="tracker-observation-label">
+                  <span aria-hidden="true">›</span> Observación técnica
+                </span>
+                <p class="tracker-observation-text" id="result-observation"></p>
+              </div>
+
+              <!-- Timeline de estados -->
+              <div class="tracker-timeline" id="result-timeline" aria-label="Estados de la reparación">
+                <!-- Generado por JS -->
+              </div>
+            </div>
+
+            <!-- Error: código no encontrado -->
+            <div class="tracker-error" id="tracker-error" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <p>Código no encontrado. Verificá que esté escrito correctamente.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         GALERÍA
+    ============================================================ -->
+    <section class="section section--alt" id="galeria" aria-labelledby="galeria-title">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Trabajos realizados</span>
+          <h2 class="section-title" id="galeria-title">Galería</h2>
+          <p class="section-subtitle">Reparaciones, armados y limpiezas realizadas con atención al detalle.</p>
+        </div>
+
+        <!-- Filtros de galería -->
+        <div class="gallery-filters reveal" role="group" aria-label="Filtrar galería">
+          <button class="gallery-filter active" data-filter="all">Todos</button>
+          <button class="gallery-filter" data-filter="reparacion">Reparaciones</button>
+          <button class="gallery-filter" data-filter="armado">Armados de PC</button>
+          <button class="gallery-filter" data-filter="limpieza">Limpiezas</button>
+          <button class="gallery-filter" data-filter="componentes">Componentes</button>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid">
+
+          <!-- Las imágenes usan gradientes de placeholder hasta tener fotos reales -->
+          <figure class="gallery-item reveal" data-category="armado" aria-label="Armado de PC gaming">
+            <div class="gallery-placeholder gallery-placeholder--1"></div>
+            <figcaption class="gallery-caption">Armado PC completo</figcaption>
+          </figure>
+
+          <figure class="gallery-item reveal" data-category="reparacion" aria-label="Reparación de notebook">
+            <div class="gallery-placeholder gallery-placeholder--2"></div>
+            <figcaption class="gallery-caption">Reparación de notebook</figcaption>
+          </figure>
+
+          <figure class="gallery-item reveal" data-category="limpieza" aria-label="Limpieza interna de PC">
+            <div class="gallery-placeholder gallery-placeholder--3"></div>
+            <figcaption class="gallery-caption">Limpieza interna</figcaption>
+          </figure>
+
+          <figure class="gallery-item reveal" data-category="componentes" aria-label="Cambio de componentes">
+            <div class="gallery-placeholder gallery-placeholder--4"></div>
+            <figcaption class="gallery-caption">Actualización de RAM y SSD</figcaption>
+          </figure>
+
+          <figure class="gallery-item reveal" data-category="reparacion" aria-label="Cambio de pantalla de celular">
+            <div class="gallery-placeholder gallery-placeholder--5"></div>
+            <figcaption class="gallery-caption">Cambio de pantalla</figcaption>
+          </figure>
+
+          <figure class="gallery-item reveal" data-category="armado" aria-label="Armado de PC con cable management">
+            <div class="gallery-placeholder gallery-placeholder--6"></div>
+            <figcaption class="gallery-caption">Cable management</figcaption>
+          </figure>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         OPINIONES DE CLIENTES
+    ============================================================ -->
+    <section class="section" id="opiniones" aria-labelledby="opiniones-title">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Lo que dicen</span>
+          <h2 class="section-title" id="opiniones-title">Opiniones de clientes</h2>
+          <!-- TODO: Reemplazar testimonios estáticos con datos desde Supabase/Firebase -->
+        </div>
+
+        <div class="testimonials-grid">
+
+          <article class="testimonial-card reveal" aria-label="Opinión de Lucía M.">
+            <div class="testimonial-stars" aria-label="5 de 5 estrellas">
+              <span aria-hidden="true">★★★★★</span>
+            </div>
+            <blockquote class="testimonial-text">
+              "Me devolvieron la notebook como nueva. Me explicaron todo lo que hicieron y el precio fue exactamente el que acordamos. Muy recomendable."
+            </blockquote>
+            <footer class="testimonial-author">
+              <div class="testimonial-avatar" aria-hidden="true">L</div>
+              <div>
+                <cite class="testimonial-name">Lucía M.</cite>
+                <span class="testimonial-service">Reparación de notebook</span>
+              </div>
+            </footer>
+          </article>
+
+          <article class="testimonial-card reveal" aria-label="Opinión de Martín R.">
+            <div class="testimonial-stars" aria-label="5 de 5 estrellas">
+              <span aria-hidden="true">★★★★★</span>
+            </div>
+            <blockquote class="testimonial-text">
+              "Armaron mi PC desde cero. El seguimiento por código es genial, sabía exactamente en qué etapa estaba el armado. Servicio de primera."
+            </blockquote>
+            <footer class="testimonial-author">
+              <div class="testimonial-avatar" aria-hidden="true">M</div>
+              <div>
+                <cite class="testimonial-name">Martín R.</cite>
+                <span class="testimonial-service">Armado de PC</span>
+              </div>
+            </footer>
+          </article>
+
+          <article class="testimonial-card reveal" aria-label="Opinión de Sofía G.">
+            <div class="testimonial-stars" aria-label="5 de 5 estrellas">
+              <span aria-hidden="true">★★★★★</span>
+            </div>
+            <blockquote class="testimonial-text">
+              "Mi celular tenía la pantalla rota y la batería agotada. Lo dejé a la mañana y a la tarde ya estaba listo. Rápido, prolijo y con garantía."
+            </blockquote>
+            <footer class="testimonial-author">
+              <div class="testimonial-avatar" aria-hidden="true">S</div>
+              <div>
+                <cite class="testimonial-name">Sofía G.</cite>
+                <span class="testimonial-service">Reparación de celular</span>
+              </div>
+            </footer>
+          </article>
+
+          <article class="testimonial-card reveal" aria-label="Opinión de Diego P.">
+            <div class="testimonial-stars" aria-label="5 de 5 estrellas">
+              <span aria-hidden="true">★★★★★</span>
+            </div>
+            <blockquote class="testimonial-text">
+              "Tenía una PC con virus que no arrancaba. La limpiaron, le pusieron Windows nuevo y quedó impecable. Atienden con mucha honestidad."
+            </blockquote>
+            <footer class="testimonial-author">
+              <div class="testimonial-avatar" aria-hidden="true">D</div>
+              <div>
+                <cite class="testimonial-name">Diego P.</cite>
+                <span class="testimonial-service">Eliminación de virus</span>
+              </div>
+            </footer>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CONTACTO
+    ============================================================ -->
+    <section class="section section--alt" id="contacto" aria-labelledby="contacto-title">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Hablemos</span>
+          <h2 class="section-title" id="contacto-title">Contacto</h2>
+          <p class="section-subtitle">Escribinos y te respondemos a la brevedad.</p>
+        </div>
+
+        <div class="contact-grid">
+
+          <!-- Instagram -->
+          <a href="https://instagram.com/nware.ar" target="_blank" rel="noopener noreferrer" class="contact-card reveal" aria-label="Instagram de Nware">
+            <div class="contact-card-icon contact-card-icon--instagram" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </div>
+            <div class="contact-card-content">
+              <span class="contact-card-label">Instagram</span>
+              <span class="contact-card-value">@nware.ar</span>
+            </div>
+            <div class="contact-card-arrow" aria-hidden="true">→</div>
+          </a>
+
+          <!-- Email -->
+          <a href="mailto:contacto@nware.com.ar" class="contact-card reveal" aria-label="Email de Nware">
+            <div class="contact-card-icon contact-card-icon--email" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div class="contact-card-content">
+              <span class="contact-card-label">Correo electrónico</span>
+              <span class="contact-card-value">contacto@nware.com.ar</span>
+            </div>
+            <div class="contact-card-arrow" aria-hidden="true">→</div>
+          </a>
+
+          <!-- WhatsApp / Teléfono -->
+          <a href="https://wa.me/5492615000000" target="_blank" rel="noopener noreferrer" class="contact-card reveal" aria-label="WhatsApp de Nware">
+            <div class="contact-card-icon contact-card-icon--whatsapp" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+              </svg>
+            </div>
+            <div class="contact-card-content">
+              <span class="contact-card-label">WhatsApp</span>
+              <span class="contact-card-value">+54 9 261 500-0000</span>
+            </div>
+            <div class="contact-card-arrow" aria-hidden="true">→</div>
+          </a>
+
+          <!-- Ubicación -->
+          <div class="contact-card contact-card--location reveal" aria-label="Ubicación de Nware">
+            <div class="contact-card-icon contact-card-icon--location" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <div class="contact-card-content">
+              <span class="contact-card-label">Ubicación</span>
+              <span class="contact-card-value">Mendoza, Argentina</span>
+              <span class="contact-card-sub">Atención con turno previo</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Marca -->
+        <div class="footer-brand">
+          <a href="#inicio" class="footer-logo" aria-label="Nware inicio">
+            <img src="assets/logo-fondonegro.png" alt="" class="footer-logo-img footer-logo-img--dark" aria-hidden="true" />
+            <img src="assets/logo_fondoblanco.png" alt="" class="footer-logo-img footer-logo-img--light" aria-hidden="true" />
+            <span>Nware</span>
+          </a>
+          <p class="footer-tagline">Hardware, software y soluciones tecnológicas.</p>
+        </div>
+
+        <!-- Links rápidos -->
+        <nav class="footer-nav" aria-label="Links rápidos del footer">
+          <h4 class="footer-nav-title">Navegación</h4>
+          <ul class="footer-nav-list" role="list">
+            <li><a href="#servicios" class="footer-nav-link">Servicios</a></li>
+            <li><a href="#por-que-nware" class="footer-nav-link">Por qué Nware</a></li>
+            <li><a href="#seguimiento" class="footer-nav-link">Seguimiento</a></li>
+            <li><a href="#galeria" class="footer-nav-link">Galería</a></li>
+            <li><a href="#opiniones" class="footer-nav-link">Opiniones</a></li>
+            <li><a href="#contacto" class="footer-nav-link">Contacto</a></li>
+          </ul>
+        </nav>
+
+        <!-- Servicios rápidos -->
+        <nav class="footer-nav" aria-label="Servicios del footer">
+          <h4 class="footer-nav-title">Servicios</h4>
+          <ul class="footer-nav-list" role="list">
+            <li><a href="#servicios" class="footer-nav-link">Reparación de PC</a></li>
+            <li><a href="#servicios" class="footer-nav-link">Reparación de notebooks</a></li>
+            <li><a href="#servicios" class="footer-nav-link">Reparación de celulares</a></li>
+            <li><a href="#servicios" class="footer-nav-link">Recuperación de datos</a></li>
+            <li><a href="#servicios" class="footer-nav-link">Mantenimiento preventivo</a></li>
+          </ul>
+        </nav>
+
+        <!-- Contacto footer -->
+        <div class="footer-contact">
+          <h4 class="footer-nav-title">Contacto</h4>
+          <ul class="footer-contact-list" role="list">
+            <li>
+              <a href="https://instagram.com/nware.ar" target="_blank" rel="noopener noreferrer" class="footer-contact-link">
+                @nware.ar
+              </a>
+            </li>
+            <li>
+              <a href="mailto:contacto@nware.com.ar" class="footer-contact-link">
+                contacto@nware.com.ar
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/5492615000000" target="_blank" rel="noopener noreferrer" class="footer-contact-link">
+                +54 9 261 500-0000
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Footer bottom -->
+      <div class="footer-bottom">
+        <p class="footer-copy">Nware &copy; 2026. Todos los derechos reservados.</p>
+        <p class="footer-location">Mendoza, Argentina</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       BOTÓN FLOTANTE DE INSTAGRAM
+  ============================================================ -->
+  <a
+    href="https://instagram.com/nware.ar"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="fab-instagram"
+    aria-label="Seguinos en Instagram"
+    title="Seguinos en Instagram"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+    </svg>
+    <span class="fab-tooltip">Instagram</span>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>
