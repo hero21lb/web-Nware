@@ -1,6 +1,6 @@
 /**
  * NWARE — script.js
- * Funcionalidades: tema, navegación, scroll, formulario, seguimiento, galería
+ * Funcionalidades: tema, navegación, scroll, auth, formulario, seguimiento, galería
  */
 
 /* ============================================================
@@ -151,46 +151,104 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* ============================================================
-   5. FORMULARIO DE REPARACIÓN (MODAL)
+   5. AUTENTICACIÓN — GOOGLE OAUTH
+   ============================================================ */
+
+const AuthManager = (() => {
+  let currentUser = null;
+
+  async function initAuth() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session?.user) {
+      await setUser(session.user);
+    }
+
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        await setUser(session.user);
+        RepairForm.onUserReady();
+      } else if (event === 'SIGNED_OUT') {
+        currentUser = null;
+        RepairForm.onUserReady();
+      }
+    });
+  }
+
+  async function setUser(user) {
+    const { error } = await supabaseClient.from('users').upsert({
+      id: user.id,
+      email: user.email,
+      full_name: user.user_metadata?.full_name || user.user_metadata?.name || '',
+      avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || '',
+    });
+    if (error) console.error('Error upserting user:', error);
+    currentUser = user;
+  }
+
+  async function signInWithGoogle() {
+    const { error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google' });
+    if (error) console.error('Error sign in:', error);
+  }
+
+  async function signOut() {
+    const { error } = await supabaseClient.auth.signOut();
+    if (error) console.error('Error sign out:', error);
+  }
+
+  function getUser() { return currentUser; }
+
+  return { initAuth, signInWithGoogle, signOut, getUser };
+})();
+
+/* ============================================================
+   6. FORMULARIO DE REPARACIÓN (MODAL)
    ============================================================ */
 
 const RepairForm = (() => {
   const modal         = document.getElementById('modal-repair');
   const openBtn       = document.getElementById('btn-solicitar-reparacion');
   const closeBtn      = document.getElementById('modal-close');
+  const googleSection = document.getElementById('google-auth-section');
+  const userInfo      = document.getElementById('user-info');
+  const userName      = document.getElementById('user-name');
+  const userEmail     = document.getElementById('user-email');
+  const userAvatar    = document.getElementById('user-avatar');
+  const googleBtn     = document.getElementById('btn-google-login');
+  const logoutBtn     = document.getElementById('btn-logout');
   const form          = document.getElementById('ticketForm');
   const resultBox     = document.getElementById('result');
   const resultCode    = document.getElementById('result-code-text');
   const resultClose   = document.getElementById('result-close');
-  const contactInput  = document.getElementById('contact');
-  const toggleBtns    = document.querySelectorAll('.toggle-btn');
+
+  function onUserReady() {
+    const user = AuthManager.getUser();
+    if (user) {
+      googleSection.hidden = true;
+      userInfo.hidden = false;
+      userName.textContent = user.user_metadata?.full_name || user.user_metadata?.name || 'Usuario';
+      userEmail.textContent = user.email || '';
+      userAvatar.src = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
+      form.hidden = false;
+      document.getElementById('customerName').value = userName.textContent;
+      document.getElementById('contact').value = user.email || '';
+      document.getElementById('userId').value = user.id;
+    } else {
+      googleSection.hidden = false;
+      userInfo.hidden = true;
+      form.hidden = true;
+    }
+  }
 
   function openModal() {
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
-    form.hidden = false;
     resultBox.hidden = true;
-    form.reset();
-    contactInput.placeholder = '@usuario';
-    toggleBtns.forEach(b => b.classList.toggle('active', b.dataset.type === 'instagram'));
+    onUserReady();
   }
 
   function closeModal() {
     modal.hidden = true;
     document.body.style.overflow = '';
-  }
-
-  /* Contact type toggle */
-  function initToggle() {
-    toggleBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        toggleBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        contactInput.placeholder = btn.dataset.type === 'instagram' ? '@usuario' : '+54 9';
-        contactInput.value = btn.dataset.type === 'instagram' ? '@' : '';
-        contactInput.focus();
-      });
-    });
   }
 
   /* Submit form */
@@ -204,6 +262,7 @@ const RepairForm = (() => {
       .insert([
         {
           code,
+          user_id: document.getElementById('userId').value,
           customer_name: document.getElementById('customerName').value.trim(),
           contact: document.getElementById('contact').value.trim(),
           device_type: document.getElementById('deviceType').value,
@@ -239,15 +298,16 @@ const RepairForm = (() => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !modal.hidden) closeModal();
     });
-    initToggle();
+    googleBtn?.addEventListener('click', AuthManager.signInWithGoogle);
+    logoutBtn?.addEventListener('click', AuthManager.signOut);
     form?.addEventListener('submit', handleSubmit);
   }
 
-  return { init };
+  return { init, onUserReady };
 })();
 
 /* ============================================================
-   6. SEGUIMIENTO DE REPARACIONES
+   7. SEGUIMIENTO DE REPARACIONES
    ============================================================ */
 
 const RepairTracker = (() => {
@@ -428,7 +488,7 @@ const RepairTracker = (() => {
 
 
 /* ============================================================
-   7. GALERÍA — FILTROS
+   8. GALERÍA — FILTROS
    ============================================================ */
 
 const GalleryFilter = (() => {
@@ -467,7 +527,7 @@ const GalleryFilter = (() => {
 
 
 /* ============================================================
-   8. SCROLL SUAVE PARA ANCHORS
+   9. SCROLL SUAVE PARA ANCHORS
    ============================================================ */
 
 function initSmoothScroll() {
@@ -500,7 +560,7 @@ function initSmoothScroll() {
 
 
 /* ============================================================
-   9. BOTÓN "VOLVER ARRIBA" IMPLÍCITO EN EL LOGO
+   10. BOTÓN "VOLVER ARRIBA" IMPLÍCITO EN EL LOGO
    Ya funciona por href="#inicio" en el logo del footer/nav.
    No requiere código adicional gracias a scroll-behavior CSS.
    ============================================================ */
@@ -510,10 +570,11 @@ function initSmoothScroll() {
    10. INICIALIZACIÓN
    ============================================================ */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   ThemeManager.init();
   NavManager.init();
   ScrollReveal.init();
+  await AuthManager.initAuth();
   RepairForm.init();
   RepairTracker.init();
   GalleryFilter.init();

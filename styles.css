@@ -1949,6 +1949,62 @@ body.light-mode .result-hint {
   color: var(--color-text-muted);
 }
 
+/* Botón Google */
+.btn--google {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0.625rem 1.5rem;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: #fff;
+  background-color: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+.btn--google:hover {
+  background-color: #2a2a2a;
+  border-color: #888;
+  transform: translateY(-1px);
+}
+.btn--google svg { flex-shrink: 0; }
+
+/* User info en modal */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+.user-info img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.user-info-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.user-info-text span:first-child {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+.user-info-text span:last-child {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @media (max-width: 640px) {
   .modal-container {
     max-width: 100%;
@@ -1961,14 +2017,5 @@ body.light-mode .result-hint {
 
   .modal-form {
     padding: var(--space-4);
-  }
-
-  .contact-toggle {
-    width: 100%;
-  }
-
-  .toggle-btn {
-    flex: 1;
-    text-align: center;
   }
 }
