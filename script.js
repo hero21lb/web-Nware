@@ -323,11 +323,13 @@ const RepairTracker = (() => {
     });
   }
 
-  /** Aplica clases de color según el estado */
+  /** Aplica clase de color según el estado */
   function applyStatusStyles(estado, badge) {
-    badge?.classList.remove('status--completado', 'status--espera');
-    if (estado === 'completado') badge?.classList.add('status--completado');
-    if (estado === 'espera')     badge?.classList.add('status--espera');
+    const statuses = ['recibido', 'diagnostico', 'reparacion', 'verificacion', 'completado', 'espera'];
+    badge?.classList.remove(...statuses.map(s => 'status--' + s));
+    if (estado && statuses.includes(estado)) {
+      badge?.classList.add('status--' + estado);
+    }
   }
 
   /** Muestra los datos de la reparación en el DOM */
@@ -341,6 +343,13 @@ const RepairTracker = (() => {
 
     const badge = document.getElementById('result-status-badge');
     applyStatusStyles(data.estado, badge);
+
+    const statuses = ['recibido', 'diagnostico', 'reparacion', 'verificacion', 'completado', 'espera'];
+    card?.classList.remove(...statuses.map(s => 'status--' + s));
+    if (data.estado && statuses.includes(data.estado)) {
+      card?.classList.add('status--' + data.estado);
+    }
+
     renderTimeline(data.estado);
 
     showOnly(card);
