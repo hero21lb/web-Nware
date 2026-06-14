@@ -270,7 +270,7 @@ const RepairForm = (() => {
 
     const code = 'NW-' + String(Math.floor(Math.random() * 100000)).padStart(5, '0');
 
-    const { error } = await supabaseClient
+    const { error: insertError, data: inserted } = await supabaseClient
       .from('repairs')
       .insert([
         {
@@ -283,9 +283,11 @@ const RepairForm = (() => {
           status: 'recibido',
           notes: '',
         }
-      ]);
+      ])
+      .select()
+      .single();
 
-    if (error) {
+    if (insertError) {
       resultBox.querySelector('.result-title').textContent = 'Error al registrar';
       resultCode.textContent = '';
       resultBox.querySelector('.result-hint').textContent = 'Ocurrió un error. Intentá de nuevo más tarde.';
@@ -295,6 +297,17 @@ const RepairForm = (() => {
       resultCode.textContent = code;
       resultBox.querySelector('.result-hint').textContent = 'Guardá este código para hacer el seguimiento de tu reparación.';
       resultBox.querySelector('.result-icon svg path').setAttribute('d', 'M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4L12 14.01 9 11.01');
+
+      const user = AuthManager.getUser();
+      if (user?.email && inserted) {
+        fetch('https://emailworker.hero21kta.workers.dev/api/send-repair-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userEmail: user.email, repair: inserted }),
+        }).then(res => {
+          if (!res.ok) console.error('Email worker returned', res.status);
+        }).catch(err => console.error('Error sending email:', err));
+      }
     }
 
     form.hidden = true;
