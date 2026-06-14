@@ -161,12 +161,21 @@ const AuthManager = (() => {
     const { data: { session } } = await supabaseClient.auth.getSession();
     if (session?.user) {
       await setUser(session.user);
+      if (sessionStorage.getItem('nware-oauth-return')) {
+        sessionStorage.removeItem('nware-oauth-return');
+        RepairForm.openModal();
+        return;
+      }
     }
 
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session?.user) {
         await setUser(session.user);
         RepairForm.onUserReady();
+        if (sessionStorage.getItem('nware-oauth-return')) {
+          sessionStorage.removeItem('nware-oauth-return');
+          RepairForm.openModal();
+        }
       } else if (event === 'SIGNED_OUT') {
         currentUser = null;
         RepairForm.onUserReady();
@@ -186,8 +195,12 @@ const AuthManager = (() => {
   }
 
   async function signInWithGoogle() {
+    sessionStorage.setItem('nware-oauth-return', 'true');
     const { error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google' });
-    if (error) console.error('Error sign in:', error);
+    if (error) {
+      sessionStorage.removeItem('nware-oauth-return');
+      console.error('Error sign in:', error);
+    }
   }
 
   async function signOut() {
@@ -303,7 +316,7 @@ const RepairForm = (() => {
     form?.addEventListener('submit', handleSubmit);
   }
 
-  return { init, onUserReady };
+  return { init, onUserReady, openModal };
 })();
 
 /* ============================================================
