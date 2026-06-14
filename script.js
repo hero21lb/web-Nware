@@ -209,7 +209,7 @@ const RepairForm = (() => {
           device_type: document.getElementById('deviceType').value,
           issue_description: document.getElementById('issue').value.trim(),
           status: 'recibido',
-          observation: '',
+          notes: '',
         }
       ]);
 
@@ -337,7 +337,7 @@ const RepairTracker = (() => {
     setText('result-device',      data.dispositivo);
     setText('result-date',        data.ingreso);
     setText('result-tech',        data.tecnico);
-    setText('result-observation', data.observacion);
+    setText('result-notes', data.notes);
 
     const badge = document.getElementById('result-status-badge');
     applyStatusStyles(data.estado, badge);
@@ -364,7 +364,7 @@ const RepairTracker = (() => {
       tecnico:     'Equipo Nware',
       estado:      status,
       estadoLabel: STATUS_LABELS[status] || status,
-      observacion: data.observation || 'Sin observaciones por el momento.',
+      notes: data.notes || 'Sin novedades por el momento.',
     };
   }
 
