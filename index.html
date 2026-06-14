@@ -121,7 +121,7 @@
         </p>
 
         <div class="hero-actions">
-          <a href="#contacto" class="btn btn--primary">Solicitar reparación</a>
+          <button class="btn btn--primary" id="btn-solicitar-reparacion">Solicitar reparación</button>
           <a href="#servicios" class="btn btn--secondary">Ver servicios</a>
         </div>
 
@@ -668,6 +668,64 @@
     <span class="fab-tooltip">Instagram</span>
   </a>
 
+  <!-- ============================================================
+       MODAL SOLICITAR REPARACIÓN
+  ============================================================ -->
+  <div class="modal-overlay" id="modal-repair" hidden>
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2>Solicitar reparación</h2>
+        <button class="modal-close" id="modal-close" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <form id="ticketForm" class="modal-form">
+        <div class="form-group">
+          <label for="customerName">Nombre del cliente</label>
+          <input type="text" id="customerName" placeholder="Ej: Juan Pérez" required />
+        </div>
+
+        <div class="form-group">
+          <label>Contacto</label>
+          <div class="contact-toggle" role="group" aria-label="Tipo de contacto">
+            <button type="button" class="toggle-btn active" data-type="instagram">Instagram</button>
+            <button type="button" class="toggle-btn" data-type="phone">Teléfono</button>
+          </div>
+          <input type="text" id="contact" placeholder="@usuario" required />
+        </div>
+
+        <div class="form-group">
+          <label for="deviceType">Tipo de dispositivo</label>
+          <select id="deviceType" required>
+            <option value="">Seleccionar...</option>
+            <option value="Celular">Celular</option>
+            <option value="Portátil / Notebook">Portátil / Notebook</option>
+            <option value="PC de escritorio">PC de escritorio</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="issue">Descripción del problema</label>
+          <textarea id="issue" rows="4" placeholder="Describí el problema lo más detallado posible..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn--primary modal-submit">Enviar solicitud</button>
+      </form>
+
+      <div id="result" class="modal-result" hidden>
+        <div class="result-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <p class="result-title">¡Solicitud registrada!</p>
+        <p class="result-code">Código: <strong id="result-code-text"></strong></p>
+        <p class="result-hint">Guardá este código para hacer el seguimiento de tu reparación.</p>
+        <button class="btn btn--primary" id="result-close">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>

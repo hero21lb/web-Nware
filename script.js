@@ -1,7 +1,6 @@
 /**
  * NWARE — script.js
- * Funcionalidades: tema, navegación, scroll, seguimiento, galería
- * Sin dependencias externas.
+ * Funcionalidades: tema, navegación, scroll, formulario, seguimiento, galería
  */
 
 /* ============================================================
@@ -143,63 +142,123 @@ const ScrollReveal = (() => {
 
 
 /* ============================================================
-   4. SEGUIMIENTO DE REPARACIONES
-   ============================================================
-   TODO: Para conectar a Supabase o Firebase, reemplazar la función
-   `fetchRepairStatus(code)` con una llamada real a tu base de datos.
-   Ejemplo con Supabase:
-   
-   async function fetchRepairStatus(code) {
-     const { data, error } = await supabase
-       .from('reparaciones')
-       .select('*')
-       .eq('codigo', code)
-       .single();
-     if (error || !data) return null;
-     return data;
-   }
+   4. SUPABASE — CLIENTE
+   ============================================================ */
+
+const SUPABASE_URL = 'https://xdjsfechpvquevkdcpmg.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkanNmZWNocHZxdWV2a2RjcG1nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzODY1NjUsImV4cCI6MjA5Njk2MjU2NX0.PO_rx6WuvSrSbRmET5K3Wj5rGioISo4ptucchFiVGUs';
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ============================================================
+   5. FORMULARIO DE REPARACIÓN (MODAL)
+   ============================================================ */
+
+const RepairForm = (() => {
+  const modal         = document.getElementById('modal-repair');
+  const openBtn       = document.getElementById('btn-solicitar-reparacion');
+  const closeBtn      = document.getElementById('modal-close');
+  const form          = document.getElementById('ticketForm');
+  const resultBox     = document.getElementById('result');
+  const resultCode    = document.getElementById('result-code-text');
+  const resultClose   = document.getElementById('result-close');
+  const contactInput  = document.getElementById('contact');
+  const toggleBtns    = document.querySelectorAll('.toggle-btn');
+
+  function openModal() {
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    form.hidden = false;
+    resultBox.hidden = true;
+    form.reset();
+    contactInput.placeholder = '@usuario';
+    toggleBtns.forEach(b => b.classList.toggle('active', b.dataset.type === 'instagram'));
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  /* Contact type toggle */
+  function initToggle() {
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        toggleBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        contactInput.placeholder = btn.dataset.type === 'instagram' ? '@usuario' : '+54 9';
+        contactInput.value = btn.dataset.type === 'instagram' ? '@' : '';
+        contactInput.focus();
+      });
+    });
+  }
+
+  /* Submit form */
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const code = 'NW-' + String(Math.floor(Math.random() * 100000)).padStart(5, '0');
+
+    const { error } = await supabaseClient
+      .from('repairs')
+      .insert([
+        {
+          code,
+          customer_name: document.getElementById('customerName').value.trim(),
+          contact: document.getElementById('contact').value.trim(),
+          device_type: document.getElementById('deviceType').value,
+          issue_description: document.getElementById('issue').value.trim(),
+          status: 'recibido',
+          observation: '',
+        }
+      ]);
+
+    if (error) {
+      resultBox.querySelector('.result-title').textContent = 'Error al registrar';
+      resultCode.textContent = '';
+      resultBox.querySelector('.result-hint').textContent = 'Ocurrió un error. Intentá de nuevo más tarde.';
+      resultBox.querySelector('.result-icon svg path').setAttribute('d', 'M18 6L6 18M6 6l12 12');
+    } else {
+      resultBox.querySelector('.result-title').textContent = '¡Solicitud registrada!';
+      resultCode.textContent = code;
+      resultBox.querySelector('.result-hint').textContent = 'Guardá este código para hacer el seguimiento de tu reparación.';
+      resultBox.querySelector('.result-icon svg path').setAttribute('d', 'M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4L12 14.01 9 11.01');
+    }
+
+    form.hidden = true;
+    resultBox.hidden = false;
+  }
+
+  function init() {
+    openBtn?.addEventListener('click', openModal);
+    closeBtn?.addEventListener('click', closeModal);
+    resultClose?.addEventListener('click', closeModal);
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+    initToggle();
+    form?.addEventListener('submit', handleSubmit);
+  }
+
+  return { init };
+})();
+
+/* ============================================================
+   6. SEGUIMIENTO DE REPARACIONES
    ============================================================ */
 
 const RepairTracker = (() => {
 
-  /* --- Datos de ejemplo (demo) --- */
-  const DEMO_DATA = {
-    'NW-2026-001': {
-      codigo:      'NW-2026-001',
-      dispositivo: 'Notebook HP Pavilion 15',
-      ingreso:     '13/06/2026',
-      tecnico:     'Equipo Nware',
-      estado:      'diagnostico',
-      estadoLabel: 'En diagnóstico',
-      observacion: 'Se detectó una falla en la unidad de almacenamiento (HDD con sectores defectuosos). Se está realizando verificación adicional con herramientas de análisis para determinar si es posible la recuperación de datos antes de proceder con el reemplazo.',
-    },
-    'NW-2026-002': {
-      codigo:      'NW-2026-002',
-      dispositivo: 'iPhone 13 – Pantalla rota',
-      ingreso:     '12/06/2026',
-      tecnico:     'Equipo Nware',
-      estado:      'completado',
-      estadoLabel: 'Listo para retirar',
-      observacion: 'Se realizó el cambio de display OLED y batería. El equipo fue verificado completamente: táctil, Face ID y cámara funcionan correctamente. Incluye 30 días de garantía.',
-    },
-    'NW-2026-003': {
-      codigo:      'NW-2026-003',
-      dispositivo: 'PC de escritorio – Armado nuevo',
-      ingreso:     '11/06/2026',
-      tecnico:     'Equipo Nware',
-      estado:      'espera',
-      estadoLabel: 'Esperando componentes',
-      observacion: 'Se está aguardando la llegada del procesador (Ryzen 5 7600X) y la placa base. El resto de los componentes ya están verificados y listos para el armado. ETA: 2 días hábiles.',
-    },
-  };
-
   /* Pasos del timeline de reparación */
   const TIMELINE_STEPS = [
-    { id: 'recibido',    label: 'Recibido' },
-    { id: 'diagnostico', label: 'Diagnóstico' },
-    { id: 'reparacion',  label: 'Reparación' },
+    { id: 'recibido',     label: 'Recibido' },
+    { id: 'diagnostico',  label: 'Diagnóstico' },
+    { id: 'reparacion',   label: 'Reparación' },
     { id: 'verificacion', label: 'Verificación' },
-    { id: 'completado',  label: 'Listo' },
+    { id: 'completado',   label: 'Listo' },
   ];
 
   /* Orden de los estados para el timeline */
@@ -208,8 +267,17 @@ const RepairTracker = (() => {
     diagnostico:  1,
     reparacion:   2,
     verificacion: 3,
-    espera:       2, // Espera de componentes se muestra en "reparación"
+    espera:       2,
     completado:   4,
+  };
+
+  const STATUS_LABELS = {
+    recibido:     'Recibido',
+    diagnostico:  'En diagnóstico',
+    reparacion:   'En reparación',
+    verificacion: 'En verificación',
+    espera:       'Esperando componentes',
+    completado:   'Listo para retirar',
   };
 
   /* Referencias al DOM */
@@ -278,14 +346,26 @@ const RepairTracker = (() => {
     showOnly(card);
   }
 
-  /**
-   * Simula una llamada asíncrona a una API.
-   * REEMPLAZAR con llamada real a Supabase/Firebase.
-   */
   async function fetchRepairStatus(code) {
-    // Simula latencia de red
-    await new Promise((resolve) => setTimeout(resolve, 900));
-    return DEMO_DATA[code.toUpperCase().trim()] || null;
+    const { data, error } = await supabaseClient
+      .from('repairs')
+      .select('*')
+      .eq('code', code.toUpperCase().trim())
+      .maybeSingle();
+
+    if (error || !data) return null;
+
+    const status = data.status || 'recibido';
+
+    return {
+      codigo:      data.code,
+      dispositivo: data.device_type,
+      ingreso:     new Date(data.created_at).toLocaleDateString('es-AR'),
+      tecnico:     'Equipo Nware',
+      estado:      status,
+      estadoLabel: STATUS_LABELS[status] || status,
+      observacion: data.observation || 'Sin observaciones por el momento.',
+    };
   }
 
   /** Manejador principal de consulta */
@@ -339,7 +419,7 @@ const RepairTracker = (() => {
 
 
 /* ============================================================
-   5. GALERÍA — FILTROS
+   7. GALERÍA — FILTROS
    ============================================================ */
 
 const GalleryFilter = (() => {
@@ -378,7 +458,7 @@ const GalleryFilter = (() => {
 
 
 /* ============================================================
-   6. SCROLL SUAVE PARA ANCHORS
+   8. SCROLL SUAVE PARA ANCHORS
    ============================================================ */
 
 function initSmoothScroll() {
@@ -411,20 +491,21 @@ function initSmoothScroll() {
 
 
 /* ============================================================
-   7. BOTÓN "VOLVER ARRIBA" IMPLÍCITO EN EL LOGO
+   9. BOTÓN "VOLVER ARRIBA" IMPLÍCITO EN EL LOGO
    Ya funciona por href="#inicio" en el logo del footer/nav.
    No requiere código adicional gracias a scroll-behavior CSS.
    ============================================================ */
 
 
 /* ============================================================
-   8. INICIALIZACIÓN
+   10. INICIALIZACIÓN
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
   ThemeManager.init();
   NavManager.init();
   ScrollReveal.init();
+  RepairForm.init();
   RepairTracker.init();
   GalleryFilter.init();
   initSmoothScroll();
