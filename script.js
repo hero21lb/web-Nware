@@ -195,13 +195,17 @@ const AuthManager = (() => {
   }
 
   async function setUser(user) {
-    const { error } = await supabaseClient.from('users').upsert({
-      id: user.id,
-      email: user.email,
-      full_name: user.user_metadata?.full_name || user.user_metadata?.name || '',
-      avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || '',
-    });
-    if (error) console.error('Error upserting user:', error);
+    try {
+      const { error } = await supabaseClient.from('users').upsert({
+        id: user.id,
+        email: user.email,
+        full_name: user.user_metadata?.full_name || user.user_metadata?.name || '',
+        avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || '',
+      });
+      if (error) console.warn('Users table not available (RLS), continuing with Auth session:', error.message);
+    } catch (e) {
+      console.warn('Users table unavailable:', e.message);
+    }
     currentUser = user;
   }
 
@@ -562,7 +566,7 @@ const Testimonials = (() => {
         .from('users')
         .select('id, full_name, avatar_url')
         .in('id', userIds);
-      if (userErr) console.error('Error loading users:', userErr);
+      if (userErr) console.warn('Could not load user profiles (RLS), using fallback:', userErr.message);
       (users || []).forEach(u => { userMap[u.id] = u; });
     }
 
@@ -575,21 +579,30 @@ const Testimonials = (() => {
       list.innerHTML = '<div class="testimonials-empty"><p class="testimonials-empty-text">Aún no hay opiniones. Sé el primero en dejar una.</p></div>';
       return;
     }
-    list.innerHTML = items.map(t => `
-      <article class="testimonial-card reveal">
-        <div class="testimonial-author">
-          ${t.user?.avatar_url
-            ? `<img class="testimonial-avatar" src="${esc(t.user.avatar_url)}" alt="" />`
-            : `<div class="testimonial-avatar-fallback">${(t.user?.full_name || '?')[0]}</div>`
-          }
-          <div>
-            <span class="testimonial-name">${esc(t.user?.full_name || 'Usuario')}</span>
-            <span class="testimonial-date">${formatDate2(t.created_at)}</span>
+    const currentUser = AuthManager.getUser();
+    list.innerHTML = items.map(t => {
+      let userName = t.user?.full_name || null;
+      let userAvatar = t.user?.avatar_url || null;
+      if (!userName && currentUser?.id === t.user_id) {
+        userName = currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || null;
+        userAvatar = currentUser.user_metadata?.avatar_url || currentUser.user_metadata?.picture || null;
+      }
+      return `
+        <article class="testimonial-card reveal">
+          <div class="testimonial-author">
+            ${userAvatar
+              ? `<img class="testimonial-avatar" src="${esc(userAvatar)}" alt="" />`
+              : `<div class="testimonial-avatar-fallback">${(userName || '?')[0]}</div>`
+            }
+            <div>
+              <span class="testimonial-name">${esc(userName || 'Usuario')}</span>
+              <span class="testimonial-date">${formatDate2(t.created_at)}</span>
+            </div>
           </div>
-        </div>
-        <p class="testimonial-text">${esc(t.message)}</p>
-      </article>
-    `).join('');
+          <p class="testimonial-text">${esc(t.message)}</p>
+        </article>
+      `;
+    }).join('');
   }
 
   function onUserReady() {
