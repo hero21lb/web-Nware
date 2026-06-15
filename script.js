@@ -594,8 +594,8 @@ const Testimonials = (() => {
       if (!userName) userName = 'Cliente';
 
       let imageHtml = '';
-      if (t.image_url) {
-        const { data: { publicUrl } } = supabaseClient.storage.from('testimonials-images').getPublicUrl(t.image_url);
+      if (t.imagen_url) {
+        const { data: { publicUrl } } = supabaseClient.storage.from('testimonials-images').getPublicUrl(t.imagen_url);
         imageHtml = `<img class="testimonial-card-image" src="${esc(publicUrl)}" alt="Foto del testimonio" loading="lazy" />`;
       }
 
@@ -670,7 +670,7 @@ const Testimonials = (() => {
     const user = AuthManager.getUser();
     if (!user) { onUserReady(); return; }
 
-    let image_url = null;
+    let imagen_url = null;
     const file = imageInput.files[0];
     if (file) {
       const ext = file.name.split('.').pop();
@@ -682,11 +682,11 @@ const Testimonials = (() => {
         console.error('Error uploading image:', uploadError);
         return;
       }
-      image_url = fileName;
+      imagen_url = fileName;
     }
 
     const { error } = await supabaseClient.from('testimonials').insert([
-      { user_id: user.id, message: msg, image_url }
+      { user_id: user.id, message: msg, imagen_url }
     ]);
 
     if (error) {
