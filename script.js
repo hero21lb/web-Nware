@@ -587,6 +587,7 @@ const Testimonials = (() => {
         userName = currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || null;
         userAvatar = currentUser.user_metadata?.avatar_url || currentUser.user_metadata?.picture || null;
       }
+      if (!userName) userName = 'Cliente';
       return `
         <article class="testimonial-card">
           <div class="testimonial-author">
