@@ -588,7 +588,7 @@ const Testimonials = (() => {
         userAvatar = currentUser.user_metadata?.avatar_url || currentUser.user_metadata?.picture || null;
       }
       return `
-        <article class="testimonial-card reveal">
+        <article class="testimonial-card">
           <div class="testimonial-author">
             ${userAvatar
               ? `<img class="testimonial-avatar" src="${esc(userAvatar)}" alt="" />`
