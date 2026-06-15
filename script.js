@@ -542,6 +542,10 @@ const Testimonials = (() => {
   const textarea   = document.getElementById('testimonial-message');
   const charCount  = document.getElementById('testimonial-char-count');
   const loginBtn   = document.getElementById('btn-testimonial-login');
+  const imageInput = document.getElementById('testimonial-image');
+  const imagePreview = document.getElementById('testimonial-image-preview');
+  const imagePreviewImg = document.getElementById('testimonial-image-preview-img');
+  const imageRemoveBtn = document.getElementById('testimonial-image-remove');
 
   async function loadTestimonials() {
     console.log('Cargando testimonios...');
@@ -588,8 +592,16 @@ const Testimonials = (() => {
         userAvatar = currentUser.user_metadata?.avatar_url || currentUser.user_metadata?.picture || null;
       }
       if (!userName) userName = 'Cliente';
+
+      let imageHtml = '';
+      if (t.image_url) {
+        const { data: { publicUrl } } = supabaseClient.storage.from('testimonials-images').getPublicUrl(t.image_url);
+        imageHtml = `<img class="testimonial-card-image" src="${esc(publicUrl)}" alt="Foto del testimonio" loading="lazy" />`;
+      }
+
       return `
         <article class="testimonial-card">
+          ${imageHtml}
           <div class="testimonial-author">
             ${userAvatar
               ? `<img class="testimonial-avatar" src="${esc(userAvatar)}" alt="" />`
@@ -604,6 +616,38 @@ const Testimonials = (() => {
         </article>
       `;
     }).join('');
+  }
+
+  function resetImageUpload() {
+    imageInput.value = '';
+    imagePreview.hidden = true;
+    imagePreviewImg.src = '';
+  }
+
+  function handleImageSelect() {
+    const file = imageInput.files[0];
+    if (!file) { resetImageUpload(); return; }
+
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      alert('Solo se permiten imágenes JPG, PNG o WEBP.');
+      imageInput.value = '';
+      return;
+    }
+
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      alert('La imagen no debe superar los 10 MB.');
+      imageInput.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      imagePreviewImg.src = e.target.result;
+      imagePreview.hidden = false;
+    };
+    reader.readAsDataURL(file);
   }
 
   function onUserReady() {
@@ -626,8 +670,23 @@ const Testimonials = (() => {
     const user = AuthManager.getUser();
     if (!user) { onUserReady(); return; }
 
+    let image_url = null;
+    const file = imageInput.files[0];
+    if (file) {
+      const ext = file.name.split('.').pop();
+      const fileName = `${crypto.randomUUID()}.${ext}`;
+      const { error: uploadError } = await supabaseClient.storage
+        .from('testimonials-images')
+        .upload(fileName, file);
+      if (uploadError) {
+        console.error('Error uploading image:', uploadError);
+        return;
+      }
+      image_url = fileName;
+    }
+
     const { error } = await supabaseClient.from('testimonials').insert([
-      { user_id: user.id, message: msg }
+      { user_id: user.id, message: msg, image_url }
     ]);
 
     if (error) {
@@ -637,6 +696,7 @@ const Testimonials = (() => {
 
     textarea.value = '';
     charCount.textContent = '0/500';
+    resetImageUpload();
     await loadTestimonials();
 
     document.getElementById('opiniones')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -662,6 +722,8 @@ const Testimonials = (() => {
     textarea?.addEventListener('input', () => {
       charCount.textContent = textarea.value.length + '/500';
     });
+    imageInput?.addEventListener('change', handleImageSelect);
+    imageRemoveBtn?.addEventListener('click', resetImageUpload);
   }
 
   return { init, onUserReady, loadTestimonials };
