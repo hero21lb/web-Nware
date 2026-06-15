@@ -542,11 +542,25 @@ const Testimonials = (() => {
   async function loadTestimonials() {
     const { data, error } = await supabaseClient
       .from('testimonials')
-      .select('*, users(full_name, avatar_url)')
+      .select('*')
       .order('created_at', { ascending: false });
 
     if (error) { console.error('Error loading testimonials:', error); return; }
-    renderList(data || []);
+
+    const items = data || [];
+
+    const userIds = [...new Set(items.map(t => t.user_id).filter(Boolean))];
+    let userMap = {};
+    if (userIds.length > 0) {
+      const { data: users } = await supabaseClient
+        .from('users')
+        .select('id, full_name, avatar_url')
+        .in('id', userIds);
+      (users || []).forEach(u => { userMap[u.id] = u; });
+    }
+
+    const enriched = items.map(t => ({ ...t, user: userMap[t.user_id] || null }));
+    renderList(enriched);
   }
 
   function renderList(items) {
@@ -557,10 +571,12 @@ const Testimonials = (() => {
     list.innerHTML = items.map(t => `
       <article class="testimonial-card reveal">
         <div class="testimonial-author">
-          <img class="testimonial-avatar" src="${esc(t.users?.avatar_url || '')}" alt="" onerror="this.style.display='none'" />
-          <div class="testimonial-avatar-fallback" ${t.users?.avatar_url ? 'hidden' : ''}>${(t.users?.full_name || '?')[0]}</div>
+          ${t.user?.avatar_url
+            ? `<img class="testimonial-avatar" src="${esc(t.user.avatar_url)}" alt="" />`
+            : `<div class="testimonial-avatar-fallback">${(t.user?.full_name || '?')[0]}</div>`
+          }
           <div>
-            <span class="testimonial-name">${esc(t.users?.full_name || 'Usuario')}</span>
+            <span class="testimonial-name">${esc(t.user?.full_name || 'Usuario')}</span>
             <span class="testimonial-date">${formatDate2(t.created_at)}</span>
           </div>
         </div>
