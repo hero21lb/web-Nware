@@ -540,22 +540,29 @@ const Testimonials = (() => {
   const loginBtn   = document.getElementById('btn-testimonial-login');
 
   async function loadTestimonials() {
+    console.log('Cargando testimonios...');
     const { data, error } = await supabaseClient
       .from('testimonials')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (error) { console.error('Error loading testimonials:', error); return; }
+    if (error) {
+      console.error('Error loading testimonials:', error);
+      list.innerHTML = '<div class="testimonials-empty"><p class="testimonials-empty-text">Error al cargar: ' + error.message + '</p></div>';
+      return;
+    }
 
+    console.log('Testimonios obtenidos:', data);
     const items = data || [];
 
     const userIds = [...new Set(items.map(t => t.user_id).filter(Boolean))];
     let userMap = {};
     if (userIds.length > 0) {
-      const { data: users } = await supabaseClient
+      const { data: users, error: userErr } = await supabaseClient
         .from('users')
         .select('id, full_name, avatar_url')
         .in('id', userIds);
+      if (userErr) console.error('Error loading users:', userErr);
       (users || []).forEach(u => { userMap[u.id] = u; });
     }
 
