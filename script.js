@@ -673,16 +673,18 @@ const Testimonials = (() => {
     let imagen_url = null;
     const file = imageInput.files[0];
     if (file) {
-      const ext = file.name.split('.').pop();
+      const mimeToExt = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
+      const ext = mimeToExt[file.type] || 'jpg';
       const fileName = `${crypto.randomUUID()}.${ext}`;
       const { error: uploadError } = await supabaseClient.storage
         .from('testimonials-images')
-        .upload(fileName, file);
+        .upload(fileName, file, { contentType: file.type });
       if (uploadError) {
         console.error('Error uploading image:', uploadError);
-        return;
+        alert('La imagen no pudo subirse. La reseña se publicará sin imagen.');
+      } else {
+        imagen_url = fileName;
       }
-      imagen_url = fileName;
     }
 
     const { error } = await supabaseClient.from('testimonials').insert([
