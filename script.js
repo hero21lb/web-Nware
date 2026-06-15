@@ -157,28 +157,39 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const AuthManager = (() => {
   let currentUser = null;
 
+  function handleOAuthReturn() {
+    if (sessionStorage.getItem('nware-oauth-return')) {
+      sessionStorage.removeItem('nware-oauth-return');
+      RepairForm.openModal();
+      return true;
+    }
+    if (sessionStorage.getItem('nware-oauth-testimonial')) {
+      sessionStorage.removeItem('nware-oauth-testimonial');
+      setTimeout(() => {
+        document.getElementById('opiniones')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
+      return true;
+    }
+    return false;
+  }
+
   async function initAuth() {
     const { data: { session } } = await supabaseClient.auth.getSession();
     if (session?.user) {
       await setUser(session.user);
-      if (sessionStorage.getItem('nware-oauth-return')) {
-        sessionStorage.removeItem('nware-oauth-return');
-        RepairForm.openModal();
-        return;
-      }
+      if (handleOAuthReturn()) return;
     }
 
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session?.user) {
         await setUser(session.user);
         RepairForm.onUserReady();
-        if (sessionStorage.getItem('nware-oauth-return')) {
-          sessionStorage.removeItem('nware-oauth-return');
-          RepairForm.openModal();
-        }
+        Testimonials.onUserReady();
+        handleOAuthReturn();
       } else if (event === 'SIGNED_OUT') {
         currentUser = null;
         RepairForm.onUserReady();
+        Testimonials.onUserReady();
       }
     });
   }
@@ -514,7 +525,125 @@ const RepairTracker = (() => {
 
 
 /* ============================================================
-   8. GALERÍA — FILTROS
+   8. OPINIONES DE CLIENTES (TESTIMONIALS)
+   ============================================================ */
+
+const Testimonials = (() => {
+  const list       = document.getElementById('testimonials-list');
+  const prompt     = document.getElementById('testimonial-login-prompt');
+  const form       = document.getElementById('testimonial-form');
+  const formUser   = document.getElementById('testimonial-form-user');
+  const userName   = document.getElementById('testimonial-user-name');
+  const userAvatar = document.getElementById('testimonial-user-avatar');
+  const textarea   = document.getElementById('testimonial-message');
+  const charCount  = document.getElementById('testimonial-char-count');
+  const loginBtn   = document.getElementById('btn-testimonial-login');
+
+  async function loadTestimonials() {
+    const { data, error } = await supabaseClient
+      .from('testimonials')
+      .select('*, users(full_name, avatar_url)')
+      .order('created_at', { ascending: false });
+
+    if (error) { console.error('Error loading testimonials:', error); return; }
+    renderList(data || []);
+  }
+
+  function renderList(items) {
+    if (items.length === 0) {
+      list.innerHTML = '<div class="testimonials-empty"><p class="testimonials-empty-text">Aún no hay opiniones. Sé el primero en dejar una.</p></div>';
+      return;
+    }
+    list.innerHTML = items.map(t => `
+      <article class="testimonial-card reveal">
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="${esc(t.users?.avatar_url || '')}" alt="" onerror="this.style.display='none'" />
+          <div class="testimonial-avatar-fallback" ${t.users?.avatar_url ? 'hidden' : ''}>${(t.users?.full_name || '?')[0]}</div>
+          <div>
+            <span class="testimonial-name">${esc(t.users?.full_name || 'Usuario')}</span>
+            <span class="testimonial-date">${formatDate2(t.created_at)}</span>
+          </div>
+        </div>
+        <p class="testimonial-text">${esc(t.message)}</p>
+      </article>
+    `).join('');
+  }
+
+  function onUserReady() {
+    const user = AuthManager.getUser();
+    if (user) {
+      prompt.hidden = true;
+      form.hidden = false;
+      userName.textContent = user.user_metadata?.full_name || user.user_metadata?.name || 'Usuario';
+      userAvatar.src = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
+    } else {
+      prompt.hidden = false;
+      form.hidden = true;
+    }
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const msg = textarea.value.trim();
+    if (!msg) return;
+    const user = AuthManager.getUser();
+    if (!user) { onUserReady(); return; }
+
+    const { error } = await supabaseClient.from('testimonials').insert([
+      { user_id: user.id, message: msg }
+    ]);
+
+    if (error) {
+      console.error('Error posting testimonial:', error);
+      return;
+    }
+
+    textarea.value = '';
+    charCount.textContent = '0/500';
+    await loadTestimonials();
+
+    document.getElementById('opiniones')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function handleLoginClick() {
+    sessionStorage.setItem('nware-oauth-testimonial', 'true');
+    AuthManager.signInWithGoogle();
+  }
+
+  function handleTextareaFocus() {
+    if (!AuthManager.getUser()) {
+      handleLoginClick();
+    }
+  }
+
+  function init() {
+    loadTestimonials();
+    onUserReady();
+    form?.addEventListener('submit', handleSubmit);
+    loginBtn?.addEventListener('click', handleLoginClick);
+    textarea?.addEventListener('focus', handleTextareaFocus);
+    textarea?.addEventListener('input', () => {
+      charCount.textContent = textarea.value.length + '/500';
+    });
+  }
+
+  return { init, onUserReady, loadTestimonials };
+})();
+
+function esc(s) {
+  if (!s) return '';
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function formatDate2(d) {
+  if (!d) return '';
+  return new Date(d).toLocaleDateString('es-AR', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+/* ============================================================
+   9. GALERÍA — FILTROS
    ============================================================ */
 
 const GalleryFilter = (() => {
@@ -553,7 +682,7 @@ const GalleryFilter = (() => {
 
 
 /* ============================================================
-   9. SCROLL SUAVE PARA ANCHORS
+   10. SCROLL SUAVE PARA ANCHORS
    ============================================================ */
 
 function initSmoothScroll() {
@@ -586,14 +715,14 @@ function initSmoothScroll() {
 
 
 /* ============================================================
-   10. BOTÓN "VOLVER ARRIBA" IMPLÍCITO EN EL LOGO
+   11. BOTÓN "VOLVER ARRIBA" IMPLÍCITO EN EL LOGO
    Ya funciona por href="#inicio" en el logo del footer/nav.
    No requiere código adicional gracias a scroll-behavior CSS.
    ============================================================ */
 
 
 /* ============================================================
-   10. INICIALIZACIÓN
+   12. INICIALIZACIÓN
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -603,6 +732,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await AuthManager.initAuth();
   RepairForm.init();
   RepairTracker.init();
+  Testimonials.init();
   GalleryFilter.init();
   initSmoothScroll();
 
