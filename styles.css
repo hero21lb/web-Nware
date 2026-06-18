@@ -1232,19 +1232,13 @@ body.light-mode .gallery-filter.active {
   display: none;
 }
 
-/* Placeholders de galería (reemplazar con <img> cuando haya fotos) */
-.gallery-placeholder {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-xl);
+.gallery-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-16) var(--space-4);
+  color: var(--color-text-faint);
+  font-size: var(--text-lg);
 }
-
-.gallery-placeholder--1 { background: linear-gradient(135deg, #0d1117 0%, #1a2332 50%, #0f2027 100%); }
-.gallery-placeholder--2 { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
-.gallery-placeholder--3 { background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%); }
-.gallery-placeholder--4 { background: linear-gradient(135deg, #111111 0%, #1c1c2e 50%, #2d2d44 100%); }
-.gallery-placeholder--5 { background: linear-gradient(135deg, #0a0a1a 0%, #12122a 50%, #1e1e3f 100%); }
-.gallery-placeholder--6 { background: linear-gradient(135deg, #080c14 0%, #101820 50%, #1c2a38 100%); }
 
 .gallery-caption {
   position: absolute;
