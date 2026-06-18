@@ -271,6 +271,9 @@ const RepairForm = (() => {
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
     resultBox.hidden = true;
+    document.getElementById('deviceType').value = '';
+    document.getElementById('otherDevice').value = '';
+    document.getElementById('other-device-group').hidden = true;
     onUserReady();
   }
 
@@ -293,7 +296,13 @@ const RepairForm = (() => {
           user_id: document.getElementById('userId').value,
           customer_name: document.getElementById('customerName').value.trim(),
           contact: document.getElementById('contact').value.trim(),
-          device_type: document.getElementById('deviceType').value,
+          device_type: (() => {
+            const val = document.getElementById('deviceType').value;
+            if (val === 'Otro') {
+              return document.getElementById('otherDevice').value.trim() || 'Otro';
+            }
+            return val;
+          })(),
           issue_description: document.getElementById('issue').value.trim(),
           status: 'recibido',
           notes: '',
@@ -342,6 +351,10 @@ const RepairForm = (() => {
     googleBtn?.addEventListener('click', AuthManager.signInWithGoogle);
     logoutBtn?.addEventListener('click', AuthManager.signOut);
     form?.addEventListener('submit', handleSubmit);
+    document.getElementById('deviceType')?.addEventListener('change', function () {
+      const group = document.getElementById('other-device-group');
+      if (group) group.hidden = this.value !== 'Otro';
+    });
   }
 
   return { init, onUserReady, openModal };
